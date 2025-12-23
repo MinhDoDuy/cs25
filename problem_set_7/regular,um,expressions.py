@@ -1,12 +1,12 @@
-s = input("Text: ").lower()
+import re
 
-for ch in "x,?:.":
-    s = s.replace(ch, " ")
+text = input("Text: ")
+s = re.sub("[.?,:/]", " ", text.lower())
 
 words = s.split()
 
 count = 0
 for w in words:
-    if w == "um":
+    if w == 'um':
         count += 1
 print(f"Có {count} lần")
