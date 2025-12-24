@@ -1,4 +1,4 @@
-from class1 import StudentManager
+from classStudent import StudentManager
 from exceptions import InvalidAgeError,StudentNotFoundError, ScoreError, DuplicateStudentIdError
 
 

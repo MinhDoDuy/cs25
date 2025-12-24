@@ -22,9 +22,11 @@ class StudentManager:
 
     def load_students(self):
         students = []
-
         try:
-            with open(self.filename, newline="", encoding="utf-8") as file:
+            with open(self.filename, encoding="utf-8") as file:
+                # with dùng để đảm bảo k hông bị leak tài dữ liệu ra ngoài
+                # encoding="" dùng để k bắt lỗi tiếng việt
+
                 reader = csv.DictReader(file)
                 for row in reader:
                     students.append(
@@ -35,7 +37,10 @@ class StudentManager:
         return students
 
     def save_students(self):
-        with open(self.filename, "w", newline="", encoding="utf-8") as file:
+        with open(self.filename, "w", encoding="utf-8") as file:
+            # Mở file ở w
+            # Mỗi lần ghi là xóa dữ liệu cũ ghi lại file vì ở đây chỉ xóa snapshot của self.students
+            # Đảm bảo dữ liệu đồng bộ
             writer = csv.DictWriter(file, fieldnames=["id", "name", "age", "score"])
             writer.writeheader()
             for p in self.students:
