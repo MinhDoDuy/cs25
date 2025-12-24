@@ -16,7 +16,7 @@ def main():
 
         try:
             if choice == '1':
-                name = input("Product Name: ")
+                name = input("Product Name: ").capitalize()
                 while True:
                     try:
                         price = float(input("Input Price: "))

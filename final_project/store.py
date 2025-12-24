@@ -17,6 +17,8 @@ class Store:
         products = []
         try:
             with open(self.filename, newline="", encoding="utf-8") as file:
+                #with dùng để đảm bảo k hông bị leak tài dữ liệu ra ngoài
+                #encoding="" dùng để k bắt lỗi tiếng việt
                 reader = csv.DictReader(file)
                 for row in reader:
                     products.append(
@@ -28,8 +30,11 @@ class Store:
 
     def save_products(self):
         with open(self.filename, "w", newline="", encoding="utf-8") as file:
-            writer = csv.DictWriter(file, fieldnames=["name", "price"])
-            writer.writeheader()
+            #Mở file ở chế độ write
+            #Mỗi lần ghi là ghi đè cả file
+            #Đảm bảo dữ liệu đồng bộ
+            writer = csv.DictWriter(file, fieldnames=["name", "price"]) #csv sẽ có 2 cột
+            writer.writeheader() #ghi dòng tiêu đề name,price
             for p in self.products:
                 writer.writerow({
                     "name": p.name,
