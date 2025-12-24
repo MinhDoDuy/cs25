@@ -6,6 +6,6 @@ fruits = {
     "Banana": 110,
     "Chocolate": 120
 }
-f = input("Item: ")
+f = input("Item: ").lower()
 if f in fruits:
     print("Calories: ", fruits[f]) #Lấy giá trị tương ứng với key f trong dict

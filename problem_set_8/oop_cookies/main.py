@@ -5,7 +5,7 @@ def main():
     jar = Jar(capacity)
 
     while True:
-        print("\nCurrent jar:", jar)
+        print(f"\nCurrent jar: {jar} - ", jar.size)
         print("1. Deposit cookies")
         print("2. Withdraw cookies")
         print("3. All Cookies")
@@ -21,7 +21,7 @@ def main():
                 n = int(input("How many cookies to withdraw? "))
                 jar.withdraw(n)
             elif choice == '3':
-                print(f"All cookie: {jar} -", jar.size())
+                print(f"All cookie: {jar} -", jar.size)
             elif choice == "4":
                 print("Bye!")
                 break
