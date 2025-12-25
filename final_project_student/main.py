@@ -1,5 +1,5 @@
 from classStudent import StudentManager
-from exceptions import InvalidAgeError,StudentNotFoundError, ScoreError, DuplicateStudentIdError
+from exceptions import InvalidAgeError, StudentNotFoundError, ScoreError, DuplicateStudentIdError
 
 
 def show_menu():
@@ -10,7 +10,7 @@ def show_menu():
     print("4. Exit")
 
 def main():
-    class1 = StudentManager("data.csv")
+    manager = StudentManager("student.csv")
     while True:
         show_menu()
         choice = input("Choose: ").strip()
@@ -21,7 +21,7 @@ def main():
                 while True:
                     try:
                         student_Id = int(input("Student ID: "))
-                        if class1.is_exist(student_Id):
+                        if manager.is_exist(student_Id):
                             raise DuplicateStudentIdError
                         break
                     except ValueError:
@@ -30,19 +30,19 @@ def main():
                         print("❌ ID Student already exists")
                         #phải cho except ở dưới để nhập lại luôn
 
-                name = input("Student Name: ").capitalize()
+                name = str(input("Student Name: ")).capitalize()
 
                 #age
                 while True:
                     try:
                         age = int(input("Input Age: "))
-                        if age < 10 or age > 20:
+                        if age < 6 or age > 20:
                             raise InvalidAgeError
                         break
                     except ValueError:
                         print("❌ Age must be number")
                     except InvalidAgeError:
-                        print("❌ Age must be between 10 and 20")
+                        print("❌ Age must be between 6 and 20")
 
                 #score
                 while True:
@@ -56,20 +56,21 @@ def main():
                     except ScoreError:
                         print("❌ Score must between 0 and 10")
 
-                class1.add_student(student_Id, name, age, score)
+                manager.add_student(student_Id, name, age, score)
                 print("✅ Student add successfully")
 
             elif choice == '2':
                 student_Id = int(input("Student ID: "))
-                class1.remove_student(student_Id)
+                manager.remove_student(student_Id)
                 print("✅ Product remove")
 
             elif choice == '3':
-                students = class1.list_student()
+                students = manager.list_student()
                 if not students:
                     print("❌ Dont have any student")
-                for p in students:
-                    print(f"Id: {p.student_Id} - {p.name} - {p.age} years old - {p.score}")
+                else:
+                    for s in students:
+                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - {s.score}")
 
             elif choice == '4':
                 print("\nBye")
