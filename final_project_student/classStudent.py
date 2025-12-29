@@ -17,18 +17,23 @@ class Student:
 class StudentManager:
     def __init__(self, filename):
         self.filename = filename
-        self.students = self.load_students()
+        self.students = self.load_students() #Đọc file csv
 
     def load_students(self):
         students = []
         try:
             with open(self.filename, encoding="utf-8") as file:
-                # with dùng để đảm bảo k hông bị leak tài dữ liệu ra ngoài
+                # with dùng để đảm bảo k hông bị leak tài dữ liệu ra ngoài và tự động đóng
                 # encoding="" dùng để k bắt lỗi tiếng việt
                 reader = csv.DictReader(file) #mỗi dòng là dict
                 for row in reader:
                     students.append(
-                        Student(int(row["id"]), row["name"], int(row["age"]), float(row["score"]))
+                        Student(
+                            int(row["id"]),
+                            row["name"],
+                            int(row["age"]),
+                            float(row["score"])
+                        )
                     )
         except FileNotFoundError:
             pass
