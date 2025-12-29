@@ -54,11 +54,25 @@ class StudentManager:
                     "score": s.score
                 })
 
-    def add_student(self, student_Id, name, age, score):
-        # for s in self.students:
-        #     if s.student_Id == student_Id:
-        #         raise ValueError("ID Student already exists")
+    def generate_id(self):
+        if not self.students:
+            return 1
+        return max(s.student_Id for s in self.students) + 1
+
+    def find_student_by_id(self, student_Id):
+        for s in self.students:
+            if s.student_Id == student_Id:
+                return s
+        raise StudentNotFoundError("❌ Student ID not found")
+
+    def add_student(self, name, age, score):
+        student_Id = self.generate_id()
         self.students.append(Student(student_Id, name, age, score))
+        self.save_students()
+
+    def remove_student(self, student_Id):
+        student = self.find_student_by_id(student_Id)
+        self.students.remove(student)
         self.save_students()
 
     def is_exist(self, student_Id):
@@ -67,13 +81,8 @@ class StudentManager:
                 return True
         return False
 
-    def remove_student(self, student_Id):
-        for s in self.students:
-            if s.student_Id == student_Id:
-                self.students.remove(s)
-                self.save_students()
-                return
-        raise StudentNotFoundError("❌ Student not found")
+    def get_top_student(self, min_score = 9):
+        return [s for s in self.students if s.score >= min_score]
 
     def list_student(self):
         return sorted(self.students, key = lambda s: s.student_Id)
