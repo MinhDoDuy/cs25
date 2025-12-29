@@ -13,6 +13,15 @@ class Student:
         self.age = age
         self.score = score
 
+    def get_rank(self):
+        if self.score >= 8:
+            return "Very Good"
+        elif self.score >= 6:
+            return "Good"
+        elif self.score >= 5:
+            return "Fail "
+        return "Below Average"
+
 
 class StudentManager:
     def __init__(self, filename):
@@ -44,14 +53,15 @@ class StudentManager:
             # Mở file ở w
             # Mỗi lần ghi là xóa dữ liệu cũ ghi lại file vì ở đây chỉ xóa snapshot của self.students
             # Đảm bảo dữ liệu đồng bộ
-            writer = csv.DictWriter(file, fieldnames=["id", "name", "age", "score"])
+            writer = csv.DictWriter(file, fieldnames=["id", "name", "age", "score", "rank"])
             writer.writeheader()
             for s in self.students:
                 writer.writerow({
                     "id": s.student_Id,
                     "name": s.name,
                     "age": s.age,
-                    "score": s.score
+                    "score": s.score,
+                    "rank": s.get_rank()
                 })
 
     def generate_id(self):
@@ -81,7 +91,7 @@ class StudentManager:
                 return True
         return False
 
-    def get_top_student(self, min_score = 9):
+    def get_top_student(self, min_score = 8):
         return [s for s in self.students if s.score >= min_score]
 
     def list_student(self):

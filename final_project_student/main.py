@@ -10,6 +10,31 @@ def show_menu():
     print("4. Top Student")
     print("5. Exit")
 
+def input_age():
+    while True:
+        try:
+            age = int(input("Input Age: "))
+            if age < 6 or age > 20:
+                raise InvalidAgeError("❌ Age must be between 6 and 20")
+            return age
+        except ValueError:
+            print("❌ Age must be a number")
+        except InvalidAgeError as e:
+            print(e)
+
+def input_score():
+    while True:
+        try:
+            score = float(input("Input Score: "))
+            if score < 0 or score > 10:
+                raise ScoreError("❌ Score must be between 0 and 10")
+            return score
+        except ValueError:
+            print("❌ Score must be a number")
+        except ScoreError as e:
+            print(e)
+
+
 def main():
     manager = StudentManager("student.csv")
     while True:
@@ -18,42 +43,16 @@ def main():
 
         try:
             if choice == '1':
-                #id
                 name = input("Student Name: ").capitalize().strip()
-
-                #age
-                while True:
-                    try:
-                        age = int(input("Input Age: "))
-                        if age < 6 or age > 20:
-                            raise InvalidAgeError("❌ Age must be between 6 and 20")
-                        break
-                    except ValueError:
-                        print("❌ Age must be number")
-                    except InvalidAgeError as e:
-                        print(e)
-
-                #score
-                while True:
-                    try:
-                        score = float(input("Input Score: "))
-                        if score < 0 or score > 10:
-                            raise ScoreError("❌ Score must between 0 and 10")
-                        break
-                    except ValueError:
-                        print("❌ Score must be a number")
-                    except ScoreError as e:
-                        print(e)
+                age = input_age()
+                score = input_score()
 
                 manager.add_student(name, age, score)
                 print("✅ Student add successfully")
 
             elif choice == '2':
-                # student_Id = int(input("Student ID: "))
-                # manager.remove_student(student_Id)
-                # print("✅ Student remove successfully")
                 try:
-                    student_Id = int(input("Student ID: "))
+                    student_Id = int(input("Student ID to remove: "))
                     manager.remove_student(student_Id)
                     print("✅ Student remove successfully")
                 except ValueError:
@@ -68,7 +67,7 @@ def main():
                 else:
                     print("📉 List Student: ")
                     for s in students:
-                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score}đ")
+                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score}đ - Rank: {s.get_rank()}")
 
             elif choice == '4':
                 top_student = manager.get_top_student()
@@ -77,7 +76,7 @@ def main():
                 else:
                     print("💯 Top student (>= 9): ")
                     for s in top_student:
-                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score}")
+                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score} - Rank: {s.get_rank()}")
 
             elif choice == '5':
                 print("\nBye")
