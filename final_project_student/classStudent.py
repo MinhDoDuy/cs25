@@ -5,7 +5,7 @@ from exceptions import InvalidAgeError, StudentNotFoundError, ScoreError
 class Student:
     def __init__(self, student_Id, name, age, score):
         if age < 6 or age > 20:
-            raise InvalidAgeError("Age must be between 10-20")
+            raise InvalidAgeError("Age must be between 6-20")
         if score < 0 or score > 10:
             raise ScoreError("Score must be between 0-10")
         self.student_Id = student_Id
