@@ -43,12 +43,21 @@ def main():
 
         try:
             if choice == '1':
-                name = input("Student Name: ").capitalize().strip()
+                while True:
+                    name = input("Student Name: ").strip()
+                    if not name:
+                        print("❌ Name cannot be empty")
+                        continue
+                    if not all(c.isalpha() or c.isspace() for c in name):
+                        print("❌ Name only contains letters and spaces")
+                        continue
+                    break
+
                 age = input_age()
                 score = input_score()
 
                 manager.add_student(name, age, score)
-                print("✅ Student add successfully")
+                print("✅ Student added successfully")
 
             elif choice == '2':
                 try:
