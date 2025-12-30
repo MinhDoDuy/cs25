@@ -3,12 +3,12 @@ from exceptions import InvalidAgeError, StudentNotFoundError, ScoreError
 
 
 class Student:
-    def __init__(self, student_Id, name, age, score):
+    def __init__(self, student_id, name, age, score):
         if age < 6 or age > 20:
             raise InvalidAgeError("Age must be between 6-20")
         if score < 0 or score > 10:
             raise ScoreError("Score must be between 0-10")
-        self.student_Id = student_Id
+        self.student_id = student_id
         self.name = name
         self.age = age
         self.score = score
@@ -38,10 +38,10 @@ class StudentManager:
                 for row in reader:
                     students.append(
                         Student(
-                            int(row["id"]),
-                            row["name"],
-                            int(row["age"]),
-                            float(row["score"])
+                            int(row["ID"]),
+                            row["Name"],
+                            int(row["Age"]),
+                            float(row["Score"])
                         )
                     )
         except FileNotFoundError:
@@ -53,46 +53,50 @@ class StudentManager:
             # Mở file ở w
             # Mỗi lần ghi là xóa dữ liệu cũ ghi lại file vì ở đây chỉ xóa snapshot của self.students
             # Đảm bảo dữ liệu đồng bộ
-            writer = csv.DictWriter(file, fieldnames=["id", "name", "age", "score", "rank"])
+            writer = csv.DictWriter(file, fieldnames=["ID", "Name", "Age", "Score", "Rank"])
             writer.writeheader()
             for s in self.students:
                 writer.writerow({
-                    "id": s.student_Id,
-                    "name": s.name,
-                    "age": s.age,
-                    "score": s.score,
-                    "rank": s.get_rank()
+                    "ID": s.student_id,
+                    "Name": s.name,
+                    "Age": s.age,
+                    "Score": s.score,
+                    "Rank": s.get_rank()
                 })
 
     def generate_id(self):
         if not self.students:
             return 1
-        return max(s.student_Id for s in self.students) + 1
+        return max(s.student_id for s in self.students) + 1
 
-    def find_student_by_id(self, student_Id):
+    def find_student_by_id(self, student_id):
         for s in self.students:
-            if s.student_Id == student_Id:
+            if s.student_id == student_id:
                 return s
         raise StudentNotFoundError("❌ Student ID not found")
 
     def add_student(self, name, age, score):
-        student_Id = self.generate_id()
-        self.students.append(Student(student_Id, name, age, score))
+        student_id = self.generate_id()
+        self.students.append(Student(student_id, name, age, score))
         self.save_students()
 
-    def remove_student(self, student_Id):
-        student = self.find_student_by_id(student_Id)
+    def remove_student(self, student_id):
+        student = self.find_student_by_id(student_id)
         self.students.remove(student)
         self.save_students()
 
-    def is_exist(self, student_Id):
+    def is_exist(self, student_id):
         for s in self.students:
-            if s.student_Id == student_Id:
+            if s.student_id == student_id:
                 return True
         return False
 
     def get_top_student(self, min_score = 8):
-        return [s for s in self.students if s.score >= min_score]
+        top_student = []
+        for s in self.students:
+            if s.score >= min_score:
+                top_student.append(s)
+        return top_student
 
     def list_student(self):
-        return sorted(self.students, key = lambda s: s.student_Id)
+        return sorted(self.students, key = lambda s: s.student_id)

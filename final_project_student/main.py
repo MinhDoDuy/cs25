@@ -6,8 +6,8 @@ def show_menu():
     print("\nMenu Student")
     print("1. Add Student")
     print("2. Remove Student")
-    print("3. List Student")
-    print("4. Top Student")
+    print("3. Top Student")
+    print("4. List Student")
     print("5. Exit")
 
 def input_age():
@@ -52,8 +52,15 @@ def main():
 
             elif choice == '2':
                 try:
-                    student_Id = int(input("Student ID to remove: "))
-                    manager.remove_student(student_Id)
+                    students = manager.list_student()
+                    if not students:
+                        print("❌ Dont have any Student")
+                    else:
+                        for s in students:
+                            print(
+                                f"ID: {s.student_id} - {s.name} - {s.age} years old - Score: {s.score}đ - Rank: {s.get_rank()}")
+                    student_id = int(input("Student ID to remove: "))
+                    manager.remove_student(student_id)
                     print("✅ Student remove successfully")
                 except ValueError:
                     print("❌ ID must be a number")
@@ -61,23 +68,24 @@ def main():
                     print(e)
 
             elif choice == '3':
+                top_student = manager.get_top_student()
+                if not top_student:
+                    print("❌ Dont have top student with score 8 or 10")
+                else:
+                    print("💯 Top student (>= 8): ")
+                    for s in top_student:
+                        print(
+                            f"ID: {s.student_id} - {s.name} - {s.age} years old - Score: {s.score} - Rank: {s.get_rank()}")
+
+            elif choice == '4':
                 students = manager.list_student()
                 if not students:
                     print("❌ Dont have any Student")
                 else:
-                    print("📉 List Student: ")
+                    print("📶 List Student: ")
                     for s in students:
-                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score}đ - Rank: {s.get_rank()}")
-
-            elif choice == '4':
-                top_student = manager.get_top_student()
-                if not top_student:
-                    print("❌ Dont have top student with score 9 or 10")
-                else:
-                    print("💯 Top student (>= 9): ")
-                    for s in top_student:
-                        print(f"Id: {s.student_Id} - {s.name} - {s.age} years old - Score: {s.score} - Rank: {s.get_rank()}")
-
+                        print(
+                            f"ID: {s.student_id} - {s.name} - {s.age} years old - Score: {s.score}đ - Rank: {s.get_rank()}")
             elif choice == '5':
                 print("\nBye")
                 break
