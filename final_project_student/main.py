@@ -12,13 +12,14 @@ def show_menu():
 
 def input_name():
     while True:
-        name = input("Student Name: ").strip()
+        name = input("Student Name: ").strip().capitalize()
         if not name:
             print("❌ Name cannot be empty")
             continue
         if not all(c.isalpha() or c.isspace() for c in name):
             print("❌ Name only contains letters and spaces")
             continue
+        name = " ".join(name.split())
         return name
 
 def input_age():
