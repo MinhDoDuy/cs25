@@ -10,6 +10,17 @@ def show_menu():
     print("4. List Student")
     print("5. Exit")
 
+def input_name():
+    while True:
+        name = input("Student Name: ").strip()
+        if not name:
+            print("❌ Name cannot be empty")
+            continue
+        if not all(c.isalpha() or c.isspace() for c in name):
+            print("❌ Name only contains letters and spaces")
+            continue
+        return name
+
 def input_age():
     while True:
         try:
@@ -43,16 +54,7 @@ def main():
 
         try:
             if choice == '1':
-                while True:
-                    name = input("Student Name: ").strip()
-                    if not name:
-                        print("❌ Name cannot be empty")
-                        continue
-                    if not all(c.isalpha() or c.isspace() for c in name):
-                        print("❌ Name only contains letters and spaces")
-                        continue
-                    break
-
+                name = input_name()
                 age = input_age()
                 score = input_score()
 
